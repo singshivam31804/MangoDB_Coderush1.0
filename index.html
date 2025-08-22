@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,45 +11,45 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Courier New', monospace;
             background: #0a0a0a;
             color: #00ff00;
             overflow-x: auto;
         }
-        
+
         .container {
             max-width: 1800px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         .header {
             text-align: center;
             margin-bottom: 30px;
             border-bottom: 2px solid #00ff00;
             padding-bottom: 20px;
         }
-        
+
         .header h1 {
             font-size: 2.5em;
             text-shadow: 0 0 10px #00ff00;
             margin-bottom: 10px;
         }
-        
+
         .header p {
             font-size: 1.2em;
             color: #888;
         }
-        
+
         .control-panel {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-        
+
         .card {
             background: #111;
             border: 1px solid #333;
@@ -58,14 +57,14 @@
             padding: 20px;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
         }
-        
+
         .card h3 {
             color: #00ff00;
             margin-bottom: 15px;
             border-bottom: 1px solid #333;
             padding-bottom: 10px;
         }
-        
+
         button {
             background: linear-gradient(135deg, #004400, #006600);
             color: #00ff00;
@@ -78,13 +77,13 @@
             transition: all 0.3s ease;
             margin: 5px;
         }
-        
+
         button:hover {
             background: linear-gradient(135deg, #006600, #009900);
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
             transform: translateY(-2px);
         }
-        
+
         button:disabled {
             background: #333;
             color: #666;
@@ -92,8 +91,8 @@
             transform: none;
             box-shadow: none;
         }
-        
-        input[type="number"], input[type="text"], select {
+
+        input[type="number"], input[type="text"], input[type="file"], select {
             background: #222;
             color: #00ff00;
             border: 1px solid #444;
@@ -102,20 +101,34 @@
             margin: 5px;
             font-family: inherit;
         }
-        
-        input[type="number"]:focus, input[type="text"]:focus, select:focus {
+
+        input[type="number"]:focus, input[type="text"]:focus, input[type="file"]:focus, select:focus {
             outline: none;
             border-color: #00ff00;
             box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
         }
-        
+
+        input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, #004400, #006600);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: linear-gradient(135deg, #006600, #009900);
+        }
+
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-bottom: 30px;
         }
-        
+
         .metric {
             background: #111;
             border: 1px solid #333;
@@ -123,30 +136,30 @@
             padding: 15px;
             text-align: center;
         }
-        
+
         .metric-label {
             color: #888;
             font-size: 0.9em;
             margin-bottom: 5px;
         }
-        
+
         .metric-value {
             color: #00ff00;
             font-size: 1.5em;
             font-weight: bold;
         }
-        
+
         .positive { color: #00ff00 !important; }
         .negative { color: #ff4444 !important; }
         .warning { color: #ffaa00 !important; }
-        
+
         .charts-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
             margin-bottom: 30px;
         }
-        
+
         .chart-container {
             background: #111;
             border: 1px solid #333;
@@ -154,7 +167,7 @@
             padding: 20px;
             height: 400px;
         }
-        
+
         .log-container {
             background: #111;
             border: 1px solid #333;
@@ -165,17 +178,17 @@
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
         }
-        
+
         .log-entry {
             margin-bottom: 5px;
             padding: 2px 0;
         }
-        
+
         .log-timestamp {
             color: #666;
             margin-right: 10px;
         }
-        
+
         .status-indicator {
             display: inline-block;
             width: 12px;
@@ -183,47 +196,47 @@
             border-radius: 50%;
             margin-right: 8px;
         }
-        
+
         .status-running { background: #00ff00; }
         .status-stopped { background: #ff4444; }
         .status-warning { background: #ffaa00; }
-        
+
         .order-book {
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
         }
-        
+
         .order-book table {
             width: 100%;
             border-collapse: collapse;
         }
-        
+
         .order-book th, .order-book td {
             text-align: right;
             padding: 5px 10px;
             border-bottom: 1px solid #333;
         }
-        
+
         .order-book th {
             background: #222;
             color: #00ff00;
         }
-        
+
         .bid-row { background-color: rgba(0, 255, 0, 0.1); }
         .ask-row { background-color: rgba(255, 68, 68, 0.1); }
-        
+
         .performance-summary {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 30px;
         }
-        
+
         @media (max-width: 768px) {
             .charts-container {
                 grid-template-columns: 1fr;
             }
-            
+
             .control-panel {
                 grid-template-columns: 1fr;
             }
@@ -275,8 +288,11 @@
                 <h3>📊 Market Data Generator</h3>
                 <button id="generateData">Generate Sample Data</button>
                 <button id="loadHistoricalData">Load Historical Data</button>
+                <button id="uploadDataFile">Upload Data File</button>
+                <input type="file" id="dataFileInput" accept=".json,.csv" style="display: none;">
                 <label>Data Points: <input type="number" id="dataPoints" value="1000" min="100" max="10000"></label><br>
                 <label>Volatility: <input type="number" id="volatilityLevel" value="0.02" min="0.001" max="0.1" step="0.001"></label>
+                <div id="uploadStatus" style="margin-top: 10px; font-size: 0.9em; color: #888;"></div>
             </div>
         </div>
 
@@ -392,7 +408,7 @@
 
     <script type="module">
         import init, { HFTEngine } from './pkg/hft_market_maker.js';
-        
+
         let engine = null;
         let priceChart = null;
         let orderBookChart = null;
@@ -400,12 +416,13 @@
         let latencyChart = null;
         let isRunning = false;
         let dataGenerationInterval = null;
-        
+        let uploadedData = null;
+
         const priceData = [];
         const pnlData = [];
         const volatilityData = [];
         const latencyData = [];
-        
+
         function log(message) {
             const logContainer = document.getElementById('logContainer');
             const timestamp = new Date().toLocaleTimeString();
@@ -415,15 +432,15 @@
             logContainer.appendChild(entry);
             logContainer.scrollTop = logContainer.scrollHeight;
         }
-        
+
         function updateStatus(status, text) {
             const indicator = document.getElementById('statusIndicator');
             const statusText = document.getElementById('statusText');
-            
+
             indicator.className = `status-indicator status-${status}`;
             statusText.textContent = text;
         }
-        
+
         function initCharts() {
             // Price & PnL Chart
             const priceCtx = document.getElementById('priceChart').getContext('2d');
@@ -459,7 +476,7 @@
                     }
                 }
             });
-            
+
             // Order Book Chart
             const obCtx = document.getElementById('orderBookChart').getContext('2d');
             orderBookChart = new Chart(obCtx, {
@@ -484,7 +501,7 @@
                     }
                 }
             });
-            
+
             // Volatility Chart
             const volCtx = document.getElementById('volatilityChart').getContext('2d');
             volatilityChart = new Chart(volCtx, {
@@ -510,7 +527,7 @@
                     }
                 }
             });
-            
+
             // Latency Chart
             const latCtx = document.getElementById('latencyChart').getContext('2d');
             latencyChart = new Chart(latCtx, {
@@ -537,11 +554,11 @@
                 }
             });
         }
-        
+
         function generateSampleMarketData() {
             const basePrice = 18450 + Math.random() * 100;
             const volatility = parseFloat(document.getElementById('volatilityLevel').value);
-            
+
             return {
                 symbol: document.getElementById('symbol').value,
                 timestamp: Date.now(),
@@ -553,51 +570,108 @@
                 volume: 1000 + Math.random() * 5000
             };
         }
-        
+
+        function parseCSVData(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const data = [];
+
+            // Expected CSV format: timestamp,symbol,last_price,bid_price,ask_price,bid_size,ask_size,volume
+            // Or variations with similar column names
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                if (values.length < headers.length) continue;
+
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index]?.trim();
+                });
+
+                // Map common column name variations
+                const mappedData = {
+                    symbol: row.symbol || row.ticker || 'UPLOADED',
+                    timestamp: parseFloat(row.timestamp) || parseFloat(row.time) || Date.now() - (lines.length - i) * 1000,
+                    last_price: parseFloat(row.last_price || row.price || row.close || row.last),
+                    bid_price: parseFloat(row.bid_price || row.bid || row.last_price) * 0.9995, // Default bid slightly below
+                    ask_price: parseFloat(row.ask_price || row.ask || row.last_price) * 1.0005, // Default ask slightly above
+                    bid_size: parseFloat(row.bid_size || row.bid_qty || row.volume) || 1000,
+                    ask_size: parseFloat(row.ask_size || row.ask_qty || row.volume) || 1000,
+                    volume: parseFloat(row.volume || row.vol) || 2000
+                };
+
+                // Validate required fields
+                if (!isNaN(mappedData.last_price) && mappedData.last_price > 0) {
+                    data.push(mappedData);
+                }
+            }
+
+            return data;
+        }
+
+        function parseJSONData(jsonText) {
+            try {
+                const rawData = JSON.parse(jsonText);
+                const dataArray = Array.isArray(rawData) ? rawData : [rawData];
+
+                return dataArray.map(item => ({
+                    symbol: item.symbol || item.ticker || 'UPLOADED',
+                    timestamp: item.timestamp || item.time || Date.now(),
+                    last_price: parseFloat(item.last_price || item.price || item.close || item.last),
+                    bid_price: parseFloat(item.bid_price || item.bid) || parseFloat(item.last_price || item.price) * 0.9995,
+                    ask_price: parseFloat(item.ask_price || item.ask) || parseFloat(item.last_price || item.price) * 1.0005,
+                    bid_size: parseFloat(item.bid_size || item.bid_qty || item.volume) || 1000,
+                    ask_size: parseFloat(item.ask_size || item.ask_qty || item.volume) || 1000,
+                    volume: parseFloat(item.volume || item.vol) || 2000
+                })).filter(item => !isNaN(item.last_price) && item.last_price > 0);
+            } catch (error) {
+                throw new Error(`Invalid JSON format: ${error.message}`);
+            }
+        }
+
         function updateCharts(marketData, result) {
             const timestamp = new Date().toLocaleTimeString();
-            
+
             // Update price chart
             priceData.push(marketData.last_price);
             if (result && result.risk_metrics) {
                 pnlData.push(result.risk_metrics.net_exposure);
             }
-            
+
             if (priceData.length > 50) {
                 priceData.shift();
                 pnlData.shift();
             }
-            
+
             priceChart.data.labels = Array.from({length: priceData.length}, (_, i) => i);
             priceChart.data.datasets[0].data = priceData;
             priceChart.data.datasets[1].data = pnlData;
             priceChart.update('none');
-            
+
             // Update volatility chart
             if (result) {
                 volatilityData.push(result.volatility);
                 if (volatilityData.length > 50) volatilityData.shift();
-                
+
                 volatilityChart.data.labels = Array.from({length: volatilityData.length}, (_, i) => i);
                 volatilityChart.data.datasets[0].data = volatilityData;
                 volatilityChart.update('none');
             }
-            
+
             // Update latency chart
             if (result && result.latency_stats) {
                 const avgLatency = (result.latency_stats.avg_processing + result.latency_stats.avg_network) / 2;
                 latencyData.push(avgLatency);
                 if (latencyData.length > 50) latencyData.shift();
-                
+
                 latencyChart.data.labels = Array.from({length: latencyData.length}, (_, i) => i);
                 latencyChart.data.datasets[0].data = latencyData;
                 latencyChart.update('none');
             }
         }
-        
+
         function updateMetrics(result) {
             if (!result) return;
-            
+
             if (result.risk_metrics) {
                 document.getElementById('totalPnL').textContent = `$${result.risk_metrics.net_exposure.toFixed(2)}`;
                 document.getElementById('riskScore').textContent = result.risk_metrics.risk_score.toFixed(1);
@@ -608,107 +682,143 @@
                 document.getElementById('var99').textContent = `$${result.risk_metrics.var_99.toFixed(0)}`;
                 document.getElementById('expectedShortfall').textContent = `$${result.risk_metrics.expected_shortfall.toFixed(0)}`;
             }
-            
+
             document.getElementById('currentVolatility').textContent = (result.volatility * 100).toFixed(3) + '%';
-            
+
             if (result.latency_stats) {
                 document.getElementById('processingLatency').textContent = result.latency_stats.avg_processing.toFixed(3);
                 document.getElementById('networkLatency').textContent = result.latency_stats.avg_network.toFixed(3);
                 document.getElementById('totalLatency').textContent = (result.latency_stats.avg_processing + result.latency_stats.avg_network).toFixed(3);
             }
         }
-        
+
         function startDataGeneration() {
             if (dataGenerationInterval) return;
-            
+
             dataGenerationInterval = setInterval(() => {
                 if (!isRunning || !engine) return;
-                
+
                 const marketData = generateSampleMarketData();
                 const result = engine.process_market_data(marketData);
-                
+
                 updateCharts(marketData, result);
                 updateMetrics(result);
-                
+
                 // Update order book display occasionally
                 if (Math.random() < 0.1) {
                     updateOrderBookDisplay(marketData);
                 }
-                
+
             }, 100); // 10 updates per second
         }
-        
+
         function stopDataGeneration() {
             if (dataGenerationInterval) {
                 clearInterval(dataGenerationInterval);
                 dataGenerationInterval = null;
             }
         }
-        
+
         function updateOrderBookDisplay(marketData) {
             const tbody = document.getElementById('orderBookData');
             tbody.innerHTML = '';
-            
+
             for (let i = 0; i < 5; i++) {
                 const row = document.createElement('tr');
                 row.className = 'bid-row';
-                
+
                 const bidQty = 100 + Math.random() * 200;
                 const askQty = 100 + Math.random() * 200;
                 const bidPrice = marketData.bid_price - i * 0.25;
                 const askPrice = marketData.ask_price + i * 0.25;
-                
+
                 row.innerHTML = `
                     <td>${bidQty.toFixed(0)}</td>
                     <td>${bidPrice.toFixed(2)}</td>
                     <td>${askPrice.toFixed(2)}</td>
                     <td>${askQty.toFixed(0)}</td>
                 `;
-                
+
                 tbody.appendChild(row);
             }
         }
-        
+
         // Event Listeners
         document.getElementById('startEngine').addEventListener('click', () => {
             if (!engine) {
                 log('Engine not initialized!');
                 return;
             }
-            
+
             isRunning = true;
             updateStatus('running', 'System Running');
             startDataGeneration();
             log('HFT Engine started successfully');
         });
-        
+
         document.getElementById('stopEngine').addEventListener('click', () => {
             isRunning = false;
             updateStatus('stopped', 'System Stopped');
             stopDataGeneration();
             log('HFT Engine stopped');
         });
-        
+
         document.getElementById('runBacktest').addEventListener('click', async () => {
             if (!engine) {
                 log('Engine not initialized!');
                 return;
             }
-            
+
             log('Starting backtest...');
             updateStatus('warning', 'Running Backtest');
-            
-            // Generate historical data for backtest
-            const historicalData = [];
-            const dataPoints = parseInt(document.getElementById('dataPoints').value);
-            
-            for (let i = 0; i < dataPoints; i++) {
-                historicalData.push(generateSampleMarketData());
+
+            let historicalData = [];
+
+            // Use uploaded data if available, otherwise generate synthetic data
+            if (uploadedData && uploadedData.length > 0) {
+                historicalData = uploadedData.slice(); // Use uploaded data
+                log(`Using uploaded data: ${historicalData.length} data points`);
+            } else {
+                // Generate historical data for backtest
+                const dataPoints = parseInt(document.getElementById('dataPoints').value);
+
+                // Generate more realistic historical data with trend and volatility
+                let basePrice = 100.0;
+                const startTime = Date.now() - (1000 * 1000);
+                let trend = 0.001; // Small upward trend
+
+                for (let i = 0; i < 1000; i++) {
+                    // Add trend, cyclical component, and random walk
+                    const cyclical = Math.sin(i * 0.02) * 2;
+                    const randomWalk = (Math.random() - 0.5) * 1.0;
+                    basePrice += trend + randomWalk * 0.1;
+
+                    const price = Math.max(basePrice + cyclical, 1.0); // Ensure positive price
+                    const spread = price * (0.0005 + Math.random() * 0.0005); // 0.5-1 bps spread
+                    const timestamp = startTime + (i * 1000);
+
+                    historicalData.push({
+                        symbol: 'NIFTY50',
+                        timestamp: timestamp,
+                        last_price: price,
+                        bid_price: price - spread / 2,
+                        ask_price: price + spread / 2,
+                        bid_size: 500 + Math.random() * 1500,
+                        ask_size: 500 + Math.random() * 1500,
+                        volume: 2000 + Math.random() * 8000
+                    });
+
+                    // Occasionally change trend direction
+                    if (i % 200 === 0) {
+                        trend = (Math.random() - 0.5) * 0.002;
+                    }
+                }
+                log(`Generated synthetic data: ${historicalData.length} data points`);
             }
-            
+
             try {
                 const results = engine.run_backtest(historicalData);
-                
+
                 // Update backtest results display
                 document.getElementById('totalReturn').textContent = (results.total_return * 100).toFixed(2) + '%';
                 document.getElementById('sharpeRatio').textContent = results.sharpe_ratio.toFixed(3);
@@ -718,16 +828,16 @@
                 document.getElementById('sortinoRatio').textContent = results.sortino_ratio.toFixed(3);
                 document.getElementById('totalTrades').textContent = results.total_trades;
                 document.getElementById('winRate').textContent = (results.win_rate * 100).toFixed(1) + '%';
-                
+
                 log(`Backtest completed: Return=${(results.total_return * 100).toFixed(2)}%, Sharpe=${results.sharpe_ratio.toFixed(3)}, MaxDD=${(results.max_drawdown * 100).toFixed(2)}%`);
                 updateStatus('running', 'Backtest Complete');
-                
+
             } catch (error) {
                 log(`Backtest failed: ${error.message}`);
                 updateStatus('warning', 'Backtest Failed');
             }
         });
-        
+
         document.getElementById('resetSystem').addEventListener('click', () => {
             if (engine) {
                 isRunning = false;
@@ -736,11 +846,11 @@
                 log('System reset completed');
             }
         });
-        
+
         document.getElementById('generateData').addEventListener('click', () => {
             log('Generating sample market data...');
             const dataPoints = parseInt(document.getElementById('dataPoints').value);
-            
+
             for (let i = 0; i < Math.min(dataPoints, 100); i++) {
                 const marketData = generateSampleMarketData();
                 if (engine) {
@@ -749,31 +859,73 @@
                     updateMetrics(result);
                 }
             }
-            
+
             log(`Generated ${Math.min(dataPoints, 100)} data points`);
         });
-        
+
         document.getElementById('benchmarkPerformance').addEventListener('click', () => {
             if (engine) {
                 const benchmark = engine.benchmark_performance();
                 log(`Performance benchmark: ${JSON.stringify(benchmark)}`);
             }
         });
-        
+
         document.getElementById('simulateFPGA').addEventListener('click', () => {
             if (engine) {
                 const optimizedLatency = engine.simulate_fpga_acceleration();
                 log(`FPGA simulation: Latency optimized to ${optimizedLatency.toFixed(3)}ms`);
             }
         });
-        
+
         document.getElementById('simulateGPU').addEventListener('click', () => {
             if (engine) {
                 const optimizedLatency = engine.simulate_gpu_acceleration();
                 log(`GPU simulation: Latency optimized to ${optimizedLatency.toFixed(3)}ms`);
             }
         });
-        
+
+        document.getElementById('uploadDataFile').addEventListener('click', () => {
+            document.getElementById('dataFileInput').click();
+        });
+
+        document.getElementById('dataFileInput').addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const statusElement = document.getElementById('uploadStatus');
+            statusElement.textContent = 'Reading file...';
+            statusElement.style.color = '#ffaa00';
+
+            try {
+                const text = await file.text();
+                let parsedData = [];
+
+                if (file.name.toLowerCase().endsWith('.json')) {
+                    parsedData = parseJSONData(text);
+                } else if (file.name.toLowerCase().endsWith('.csv')) {
+                    parsedData = parseCSVData(text);
+                } else {
+                    throw new Error('Unsupported file format. Please use JSON or CSV files.');
+                }
+
+                if (parsedData.length === 0) {
+                    throw new Error('No valid data found in file. Please check the format.');
+                }
+
+                uploadedData = parsedData;
+                statusElement.textContent = `✓ Loaded ${parsedData.length} data points from ${file.name}`;
+                statusElement.style.color = '#00ff00';
+                
+                log(`Data file uploaded successfully: ${file.name} (${parsedData.length} records)`);
+                log(`Sample data: Price=${parsedData[0]?.last_price?.toFixed(2)}, Symbol=${parsedData[0]?.symbol}`);
+
+            } catch (error) {
+                statusElement.textContent = `✗ Error: ${error.message}`;
+                statusElement.style.color = '#ff4444';
+                log(`File upload error: ${error.message}`);
+            }
+        });
+
         // Initialize everything
         const initApp = async () => {
             try {
@@ -782,17 +934,17 @@
                 initCharts();
                 log('HFT Engine initialized successfully');
                 log('All systems ready');
-                
+
                 // Start with sample data
                 setTimeout(() => {
                     document.getElementById('generateData').click();
                 }, 1000);
-                
+
             } catch (error) {
                 log(`Initialization error: ${error.message}`);
             }
         };
-        
+
         // Start the application
         initApp();
     </script>
