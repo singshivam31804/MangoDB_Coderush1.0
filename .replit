@@ -1,0 +1,26 @@
+run = "nix run"
+entrypoint = "flake.nix"
+modules = ["nix"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Build and Run"
+
+[[workflows.workflow]]
+name = "Build and Run"
+author = 46751840
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "wasm-pack build --target web --out-dir pkg"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 -m http.server 5000"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
