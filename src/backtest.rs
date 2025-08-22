@@ -104,7 +104,7 @@ impl BacktestEngine {
             let quotes = market_maker.generate_quotes(market_data, &order_book, volatility);
             
             // Simulate market making activity
-            if i > 50 { // Allow warm-up period
+            if i > 20 { // Shorter warm-up period
                 self.simulate_market_making_round(
                     market_data,
                     &quotes,
@@ -115,8 +115,8 @@ impl BacktestEngine {
                 );
             }
             
-            // Calculate daily PnL and drawdown
-            if i > 0 && i % 100 == 0 { // Every 100 ticks simulate a day
+            // Calculate PnL more frequently for better tracking
+            if i > 0 && i % 50 == 0 { // Every 50 ticks simulate a day
                 let daily_pnl = self.calculate_portfolio_pnl(&positions, market_data);
                 daily_pnls.push(daily_pnl);
                 current_capital += daily_pnl;
@@ -167,11 +167,14 @@ impl BacktestEngine {
         
         for quote in quotes {
             if self.should_accept_quote(acceptance_probability) {
-                // Simulate a fill
-                let (side, price, quantity) = if quote.bid_price > 0.0 {
+                // Simulate a fill - randomly choose bid or ask side
+                let random_side = (now() % 1000.0) / 1000.0;
+                let (side, price, quantity) = if random_side < 0.5 && quote.bid_price > 0.0 {
                     (OrderSide::Sell, quote.bid_price, quote.bid_quantity) // Someone hits our bid
-                } else {
+                } else if quote.ask_price > 0.0 {
                     (OrderSide::Buy, quote.ask_price, quote.ask_quantity) // Someone lifts our offer
+                } else {
+                    continue; // Skip if no valid quote
                 };
                 
                 // Create simulated order
@@ -195,18 +198,18 @@ impl BacktestEngine {
     }
 
     fn calculate_quote_acceptance_probability(&self, market_data: &MarketData) -> f64 {
-        // Base probability
-        let mut probability = 0.1; // 10% base chance
+        // Base probability - increased from 10% to 30%
+        let mut probability = 0.3;
         
         // Higher probability with higher volume
-        probability += (market_data.volume / 10000.0).min(0.2);
+        probability += (market_data.volume / 1000.0).min(0.4); // More responsive to volume
         
         // Higher probability with wider spreads (more attractive quotes)
         let spread = market_data.ask_price - market_data.bid_price;
         let spread_ratio = spread / market_data.bid_price;
-        probability += (spread_ratio * 100.0).min(0.3);
+        probability += (spread_ratio * 50.0).min(0.3); // More sensitive to spreads
         
-        probability.min(0.8) // Cap at 80%
+        probability.min(0.9) // Cap at 90%
     }
 
     fn should_accept_quote(&self, probability: f64) -> bool {
