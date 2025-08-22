@@ -1,8 +1,6 @@
-<<<<<<< HEAD
-=======
 # MangoDB_Coderush1.0
 HFT market making model using blockchain
->>>>>>> 4211384a6db03908523e91b348e1bfaa3e4028e0
+
 
 # 🚀 HFT Market Making Bot
 
@@ -290,6 +288,18 @@ max_daily_loss: 50000.0,        // Daily loss limit ($50K)
 var_limit: 100000.0,            // VaR limit ($100K)
 leverage_limit: 5.0,            // Maximum leverage ratio
 ```
+### Frontend
+<img width="1874" height="918" alt="image" src="https://github.com/user-attachments/assets/cc3b8487-c458-43b8-ae9e-c1cc01c21467" />
+### chatbot
+<img width="1915" height="923" alt="image" src="https://github.com/user-attachments/assets/be56052e-4447-41ae-9016-18eb57d9161a" />
+### analytics
+<img width="1882" height="917" alt="image" src="https://github.com/user-attachments/assets/63d4c04e-4df0-42a6-8a25-e6a6df28d926" />
+### order book analysis and backtest results
+<img width="1804" height="867" alt="image" src="https://github.com/user-attachments/assets/57394c74-6bcc-4fc6-b52c-765e02809101" />
+### Risk Metricsa and system logs
+<img width="1888" height="644" alt="image" src="https://github.com/user-attachments/assets/e29ed716-9e7e-4390-8ab0-435c4e44477a" />
+
+
 
 ## 📝 License
 
