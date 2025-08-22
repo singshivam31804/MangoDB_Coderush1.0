@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+# MangoDB_Coderush1.0
+HFT market making model using blockchain
+>>>>>>> 4211384a6db03908523e91b348e1bfaa3e4028e0
 
 # 🚀 HFT Market Making Bot
 
