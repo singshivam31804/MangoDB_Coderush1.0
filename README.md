@@ -296,7 +296,7 @@ leverage_limit: 5.0,            // Maximum leverage ratio
 <img width="1882" height="917" alt="image" src="https://github.com/user-attachments/assets/63d4c04e-4df0-42a6-8a25-e6a6df28d926" />
 ### order book analysis and backtest results
 <img width="1804" height="867" alt="image" src="https://github.com/user-attachments/assets/57394c74-6bcc-4fc6-b52c-765e02809101" />
-### Risk Metricsa and system logs
+### Risk Metrics and system logs
 <img width="1888" height="644" alt="image" src="https://github.com/user-attachments/assets/e29ed716-9e7e-4390-8ab0-435c4e44477a" />
 
 
