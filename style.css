@@ -209,13 +209,11 @@
             gap: 20px;
             margin-top: 30px;
         }
-        
         @media (max-width: 768px) {
-            .charts-container {
+            .control-panel {
                 grid-template-columns: 1fr;
             }
-            
-            .control-panel {
+            .charts-container {
                 grid-template-columns: 1fr;
             }
         }

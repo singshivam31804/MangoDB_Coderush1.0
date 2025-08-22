@@ -280,34 +280,41 @@ impl MarketMakerEngine {
         console_log!("Inventory updated for {}: {} -> {}", 
                     symbol, current, current + quantity_change);
     }
-
     pub fn record_fill(&mut self, order: &Order, market_price: f64) {
-        // Determine if this was an adverse fill
-        let was_adverse = match order.side {
-            OrderSide::Buy => order.price > market_price,
-            OrderSide::Sell => order.price < market_price,
-        };
+    // Determine if this was an adverse fill
+    let was_adverse = match order.side {
+        OrderSide::Buy => order.price > market_price,
+        OrderSide::Sell => order.price < market_price,
+    };
 
-        let fill_event = FillEvent {
-            timestamp: order.timestamp,
-            side: order.side.clone(),
-            price: order.price,
-            quantity: order.quantity,
-            was_adverse,
-        };
+    let fill_event = FillEvent {
+        timestamp: order.timestamp,
+        side: order.side.clone(),
+        price: order.price,
+        quantity: order.quantity,
+        was_adverse,
+    };
 
-        self.adverse_selection_detector.recent_fills.push(fill_event);
+    self.adverse_selection_detector.recent_fills.push(fill_event);
 
-        // Maintain window size
-        let max_fills = self.adverse_selection_detector.detection_window * 2;
-        if self.adverse_selection_detector.recent_fills.len() > max_fills {
-            self.adverse_selection_detector.recent_fills.remove(0);
-        }
-
-        // Update PnL tracking
-        self.state.pnl_tracker.trade_count += 1;
-        self.state.pnl_tracker.total_volume += order.quantity * order.price;
+    // Maintain window size
+    let max_fills = self.adverse_selection_detector.detection_window * 2;
+    if self.adverse_selection_detector.recent_fills.len() > max_fills {
+        self.adverse_selection_detector.recent_fills.remove(0);
     }
+
+    // Calculate PnL for this trade and update the total
+    let pnl_change = match order.side {
+        OrderSide::Buy => (market_price - order.price) * order.quantity,
+        OrderSide::Sell => (order.price - market_price) * order.quantity,
+    };
+    self.state.pnl_tracker.total_pnl += pnl_change;
+
+    // Update other PnL tracking metrics
+    self.state.pnl_tracker.trade_count += 1;
+    self.state.pnl_tracker.total_volume += order.quantity * order.price;
+}
+    
 
     pub fn get_inventory_summary(&self) -> HashMap<String, f64> {
         self.state.current_inventory.clone()
