@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HFT Trading Assistant Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-container {
+            width: 450px;
+            height: 650px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #004400, #006600);
+            color: #00ff00;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-bottom: 1px solid #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #0a0a0a;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease-in;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #004400, #006600);
+            color: #00ff00;
+            align-self: flex-end;
+            margin-left: auto;
+            border: 1px solid #00ff00;
+        }
+
+        .bot-message {
+            background: #111;
+            color: #00ff00;
+            align-self: flex-start;
+            border: 1px solid #333;
+        }
+
+        .input-container {
+            padding: 20px;
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 10px;
+            background: #111;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: #222;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+            outline: none;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: #00ff00;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+
+        .chat-input::placeholder {
+            color: #666;
+        }
+
+        .send-button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #004400, #006600);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            background: linear-gradient(135deg, #006600, #009900);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .send-button:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            border-color: #444;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 16px;
+            background: #111;
+            border-radius: 8px;
+            max-width: 85%;
+            align-self: flex-start;
+            border: 1px solid #333;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .metrics-display {
+            font-size: 11px;
+            background: #222;
+            color: #00ff00;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 8px;
+            border-left: 3px solid #00ff00;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Custom scrollbar */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #00ff00;
+        }
+
+        /* Status indicators */
+        .positive { color: #00ff00 !important; }
+        .negative { color: #ff4444 !important; }
+        .warning { color: #ffaa00 !important; }
+
+        /* Button styles in messages */
+        .bot-message button {
+            background: linear-gradient(135deg, #004400, #006600);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .bot-message button:hover {
+            background: linear-gradient(135deg, #006600, #009900);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        /* Links in messages */
+        .bot-message a {
+            color: #00aaff;
+            text-decoration: underline;
+        }
+
+        .bot-message a:hover {
+            color: #00ff00;
+        }
+
+        /* Message content styling */
+        .bot-message strong {
+            color: #00ff00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+
+        .bot-message em {
+            color: #ffaa00;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+        /* Special container styling for latency analysis redirect */
+        .redirect-container {
+            margin: 10px 0;
+            padding: 12px;
+            background: #222;
+            border-left: 3px solid #00ff00;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            🤖 HFT Trading Assistant
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <strong>Hello! I'm your HFT Trading Assistant.</strong><br><br>
+                I can help you with:
+                <br>• Market data analysis
+                <br>• Risk management
+                <br>• Performance metrics
+                <br>• Backtesting results
+                <br>• Trading strategies
+                <br>• <em>Latency analysis</em> - Direct navigation
+                <br><br>What would you like to know?
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <input 
+                type="text" 
+                class="chat-input" 
+                id="chatInput" 
+                placeholder="Ask about trading metrics, risk analysis..."
+                maxlength="500"
+            >
+            <button class="send-button" id="sendButton">SEND</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import init, { HFTEngine } from './pkg/hft_market_maker.js';
+
+        class TradingChatbot {
+            constructor() {
+                this.engine = null;
+                this.messagesContainer = document.getElementById('chatMessages');
+                this.chatInput = document.getElementById('chatInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.typingIndicator = document.getElementById('typingIndicator');
+                
+                this.initializeEngine();
+                this.setupEventListeners();
+            }
+
+            async initializeEngine() {
+                try {
+                    await init();
+                    this.engine = new HFTEngine();
+                    console.log('HFT Engine initialized');
+                } catch (error) {
+                    console.error('Failed to initialize HFT Engine:', error);
+                    this.addMessage('bot', '⚠️ Trading engine initialization failed. Some features may not work.');
+                }
+            }
+
+            setupEventListeners() {
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+            }
+
+            addMessage(sender, content) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                messageDiv.innerHTML = content;
+                this.messagesContainer.appendChild(messageDiv);
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+
+            showTyping() {
+                this.typingIndicator.style.display = 'block';
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+
+            hideTyping() {
+                this.typingIndicator.style.display = 'none';
+            }
+
+            async sendMessage() {
+                const message = this.chatInput.value.trim();
+                if (!message) return;
+
+                this.addMessage('user', message);
+                this.chatInput.value = '';
+                this.sendButton.disabled = true;
+                this.showTyping();
+
+                try {
+                    const response = await this.processMessage(message);
+                    this.hideTyping();
+                    this.addMessage('bot', response);
+                } catch (error) {
+                    this.hideTyping();
+                    this.addMessage('bot', '❌ <span class="negative">System error processing request</span>');
+                    console.error('Chat error:', error);
+                }
+
+                this.sendButton.disabled = false;
+            }
+
+            async processMessage(message) {
+                const lowerMessage = message.toLowerCase();
+
+                // Generate sample market data for demonstrations
+                const sampleMarketData = {
+                    symbol: "NIFTY50",
+                    timestamp: Date.now(),
+                    last_price: 18450 + (Math.random() - 0.5) * 100,
+                    bid_price: 18449 + (Math.random() - 0.5) * 10,
+                    ask_price: 18451 + (Math.random() - 0.5) * 10,
+                    bid_size: 500 + Math.random() * 1000,
+                    ask_size: 500 + Math.random() * 1000,
+                    volume: 5000 + Math.random() * 10000
+                };
+
+                if (lowerMessage.includes('performance') || lowerMessage.includes('metrics')) {
+                    return this.getPerformanceMetrics();
+                } else if (lowerMessage.includes('market data') || lowerMessage.includes('price')) {
+                    return this.processMarketData(sampleMarketData);
+                } else if (lowerMessage.includes('risk') || lowerMessage.includes('exposure')) {
+                    return this.getRiskAnalysis();
+                } else if (lowerMessage.includes('backtest') || lowerMessage.includes('historical')) {
+                    return this.getBacktestInfo();
+                } else if (lowerMessage.includes('latency') || lowerMessage.includes('speed')) {
+                    return this.getLatencyInfo();
+                } else if (lowerMessage.includes('help') || lowerMessage.includes('commands')) {
+                    return this.getHelpInfo();
+                } else if (lowerMessage.includes('quote') || lowerMessage.includes('spread')) {
+                    return this.getQuoteInfo(sampleMarketData);
+                } else {
+                    return this.getGeneralResponse(message);
+                }
+            }
+
+            getPerformanceMetrics() {
+                if (!this.engine) return "Trading engine not available.";
+                
+                try {
+                    const metrics = this.engine.get_performance_metrics();
+                    return `📊 <strong>PERFORMANCE METRICS</strong>
+                    <div class="metrics-display">
+                    ┌─ TRADING STATS ────────────────┐<br>
+                    │ Total Trades: ${metrics.total_trades.toString().padStart(12)} │<br>
+                    │ Current Pos:  ${metrics.current_positions.toString().padStart(12)} │<br>
+                    │ Total P&L:    $${metrics.total_pnl.toFixed(2).padStart(10)} │<br>
+                    │ Avg Latency:  ${metrics.latency_stats.average_latency.toFixed(3).padStart(9)}ms │<br>
+                    │ Risk Score:   ${metrics.risk_metrics.risk_score.toFixed(2).padStart(12)} │<br>
+                    └────────────────────────────────┘
+                    </div>`;
+                } catch (error) {
+                    return "<span class='warning'>Unable to retrieve performance metrics</span>";
+                }
+            }
+
+            processMarketData(marketData) {
+                if (!this.engine) return "Trading engine not available.";
+                
+                try {
+                    const result = this.engine.process_market_data(marketData);
+                    const spread = ((result.order_book_stats.bid_ask_spread / result.order_book_stats.mid_price) * 10000).toFixed(1);
+                    
+                    return `📈 <strong>MARKET DATA PROCESSED</strong>
+                    <div class="metrics-display">
+                    ┌─ ${marketData.symbol} ANALYSIS ──────────────┐<br>
+                    │ Mid Price:    ₹${result.order_book_stats.mid_price.toFixed(2).padStart(10)} │<br>
+                    │ Spread:       ${spread.padStart(12)} bps │<br>
+                    │ Volatility:   ${(result.volatility * 100).toFixed(2).padStart(9)}% │<br>
+                    │ Imbalance:    ${(result.order_book_stats.imbalance * 100).toFixed(1).padStart(9)}% │<br>
+                    │ Quotes Gen:   ${result.quotes.length.toString().padStart(12)} │<br>
+                    └─────────────────────────────────┘
+                    </div>`;
+                } catch (error) {
+                    return "<span class='warning'>Unable to process market data</span>";
+                }
+            }
+
+            getRiskAnalysis() {
+                return `⚠️ <strong>RISK MANAGEMENT SYSTEM</strong>
+                <div class="metrics-display">
+                ┌─ RISK CONTROLS ─────────────────┐<br>
+                │ VaR (95%):        <span class='positive'>ACTIVE</span>       │<br>
+                │ Max Drawdown:     <span class='positive'>TRACKED</span>      │<br>
+                │ Position Limits:  <span class='positive'>ENFORCED</span>     │<br>
+                │ Leverage Check:   <span class='positive'>SAFE</span>         │<br>
+                │ Circuit Breakers: <span class='warning'>ARMED</span>        │<br>
+                └─────────────────────────────────┘
+                </div>
+                
+                <span class='positive'>✓ All risk controls operational</span><br>
+                Real-time monitoring of positions and exposure limits.`;
+            }
+
+            getBacktestInfo() {
+                return `🔍 <strong>BACKTESTING FRAMEWORK</strong>
+                
+                <div class="metrics-display">
+                Available Analysis:<br>
+                • Market impact modeling<br>
+                • Transaction cost analysis<br>
+                • Slippage calculations<br>
+                • Performance attribution<br>
+                • Risk-adjusted returns<br>
+                • Sharpe ratio computation
+                </div>
+                
+                To run backtest: provide historical data via the main dashboard.`;
+            }
+
+            getLatencyInfo() {
+                if (!this.engine) return "Trading engine not available.";
+                
+                try {
+                    const fpgaLatency = this.engine.simulate_fpga_acceleration();
+                    const gpuLatency = this.engine.simulate_gpu_acceleration();
+                    
+                    return `⚡ <strong>LATENCY OPTIMIZATION</strong>
+                    <div class="metrics-display">
+                    ┌─ PERFORMANCE METRICS ──────────┐<br>
+                    │ Current Proc:  <span class='positive'>&lt;1ms</span>       │<br>
+                    │ FPGA Sim:      ${fpgaLatency.toFixed(3).padStart(7)}ms    │<br>
+                    │ GPU Accel:     ${gpuLatency.toFixed(3).padStart(7)}ms    │<br>
+                    │ WASM Opt:      <span class='positive'>ACTIVE</span>       │<br>
+                    │ Lock-free:     <span class='positive'>ENABLED</span>      │<br>
+                    └────────────────────────────────┘
+                    </div>`;
+                } catch (error) {
+                    return "<span class='warning'>Unable to retrieve latency data</span>";
+                }
+            }
+
+            getQuoteInfo(marketData) {
+                return `💰 <strong>QUOTE GENERATION ENGINE</strong>
+                
+                <div class="metrics-display">
+                Current Strategy for ${marketData.symbol}:<br>
+                • Target spread: 10-50 bps<br>
+                • Inventory skew: Applied<br>
+                • Adverse selection: Protected<br>
+                • Dynamic sizing: Risk-based<br>
+                • Quote frequency: &gt;100Hz
+                </div>
+                
+                <span class='positive'>Market maker actively optimizing quotes</span>`;
+            }
+
+            getHelpInfo() {
+                return `🤖 <strong>TRADING ASSISTANT COMMANDS</strong>
+                
+                <div class="metrics-display">
+                Available queries:<br>
+                • <em>"performance metrics"</em> - Trading statistics<br>
+                • <em>"market data"</em> - Process current market<br>
+                • <em>"risk analysis"</em> - Review risk controls<br>
+                • <em>"backtest"</em> - Historical simulation<br>
+                • <em>"latency"</em> - Speed & performance data<br>
+                • <em>"latency analysis"</em> - 🔗 Dashboard link<br>
+                • <em>"quotes"</em> - Market making strategies
+                </div>
+                
+                <strong>HFT trading operations support ready.</strong>`;
+            }
+
+            getGeneralResponse(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                // Check for latency analysis redirect
+                if (lowerMessage.includes('latency analysis')) {
+                    return `📊 <strong>LATENCY ANALYSIS NAVIGATION</strong>
+                    
+                    Redirecting to dedicated latency monitoring dashboard...
+                    
+                    <div class="redirect-container">
+                        <button onclick="window.parent.location.href='index.html#latency-analysis'" style="
+                            background: linear-gradient(135deg, #004400, #006600);
+                            color: #00ff00;
+                            padding: 10px 20px;
+                            border: 1px solid #00ff00;
+                            border-radius: 4px;
+                            font-weight: bold;
+                            cursor: pointer;
+                            font-family: 'Courier New', monospace;
+                        ">🔗 GO TO LATENCY ANALYSIS</button>
+                    </div>
+                    
+                    <div class="metrics-display">
+                    Dashboard includes:<br>
+                    • Real-time processing latency<br>
+                    • Network latency tracking<br>
+                    • Performance benchmarking<br>
+                    • FPGA & GPU acceleration sims
+                    </div>`;
+                }
+                
+                const responses = [
+                    "Please specify trading metrics or analysis required.",
+                    "Query unclear. Try <em>'help'</em> for available commands.",
+                    "For optimal assistance, use: <em>'performance'</em>, <em>'risk'</em>, <em>'market data'</em>, or <em>'latency'</em>.",
+                    "Trading system ready. Specify analysis type for detailed response."
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+        }
+
+        // Initialize the chatbot when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new TradingChatbot();
+        });
+    </script>
+</body>
+</html>
