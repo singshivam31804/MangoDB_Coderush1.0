@@ -1,6 +1,7 @@
 { pkgs }: {
   deps = [
     pkgs.rustc
+    
     pkgs.cargo
     pkgs.rust-analyzer
     pkgs.wasm-pack
