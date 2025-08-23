@@ -1,0 +1,18 @@
+This is a high-frequency trading (HFT) engine implemented in Rust, designed to run on WebAssembly (Wasm). It's built as a modular system with specialized components for various aspects of an HFT strategy.
+
+Core Components
+The HFT engine is composed of several key modules that work together to execute a trading strategy, manage risk, and analyze performance.
+
+lib.rs: The main entry point for the library. It imports and re-exports all other modules and defines the core data structures used throughout the system, such as MarketData, Quote, Order, and Position. It also initializes the WebAssembly panic hook for better error handling. The main HFTEngine struct is defined here, which orchestrates the interaction between all other components.
+
+order_book.rs: This module manages a digital order book. It contains a BTreeMap to store bid and ask levels for different trading symbols and can update its state with new market data. It also calculates key metrics like mid-price, spread, and book imbalance.
+
+market_maker.rs: This component is responsible for generating quotes based on market conditions, inventory, and volatility. The MarketMakerEngine uses an InventorySkewEngine to adjust quotes based on current inventory and an AdverseSelectionDetector to modify spreads in response to unfavorable fills. It also includes a PnlTracker to monitor realized and unrealized profit and loss.
+
+volatility.rs: This module is a sophisticated volatility model that calculates volatility using a combination of Exponentially Weighted Moving Average (EWMA) and Generalized Autoregressive Conditional Heteroskedasticity (GARCH) models. It uses this information to determine the current market's volatility regime (e.g., low, normal, high, or extreme).
+
+risk_manager.rs: This module enforces a set of risk controls and calculates risk metrics. It includes limits for position size, daily loss, and leverage. The RiskManager also contains a Value-at-Risk (VaR) calculator and a drawdown monitor to ensure the trading strategy stays within predefined risk parameters.
+
+latency_engine.rs: This module is dedicated to monitoring and optimizing the system's performance. It records various latencies, including processing, execution, and quote generation times. It can also simulate performance improvements from hardware acceleration like FPGAs and GPUs.
+
+backtest.rs: This is a powerful component for simulating trading strategies using historical data. The BacktestEngine can run a full simulation of the market-making strategy and generate a BacktestResults report with detailed performance metrics. The report includes key statistics like Sharpe ratio, max drawdown, and profit factor.
