@@ -188,6 +188,87 @@ slippage_price = base_price * (1 ± slippage_factor)
 - Models quote acceptance probability based on market conditions
 - Simulates realistic fill rates and market impact
 - Accounts for adverse selection in historical simulation
+  Perfect 👍 so your chatbot is **purely frontend (HTML + CSS + JavaScript)**, no Ollama / backend involved.
+Here’s a **README.md** tailored for that project:
+
+---
+
+# 💬 Chatbot (HTML, CSS, JavaScript)
+
+A simple chatbot UI built with **HTML, CSS, and JavaScript**.
+The chatbot currently works with **predefined responses** and runs entirely on the client side (no backend required).
+
+---
+
+## 🚀 Features
+
+* ✅ Chat widget pops up at the bottom-right of the page
+* ✅ Toggle button to open/close the chatbot
+* ✅ User input with instant response from predefined rules
+* ✅ Fully frontend-based (no server required)
+* ✅ Simple and responsive design
+
+---
+
+## 🛠️ Tech Stack
+
+* **Frontend:** HTML, CSS, JavaScript
+* **Backend:** None (static website)
+
+---
+
+## 📂 Project Structure
+
+```bash
+chatbot-html-css-js/
+│── index.html        # Chatbot UI
+│── style.css         # Chatbot styling
+│── script.js         # Chatbot logic
+│── README.md         # Project documentation
+```
+
+---
+
+## ⚡ How to Run
+
+1. Clone this repository:
+
+   ```bash
+   git clone https://github.com/your-username/chatbot-html-css-js.git
+   cd chatbot-html-css-js
+   ```
+
+2. Open `index.html` in your browser.
+
+3. Start chatting with the bot 🎉
+
+---
+
+## 🖼️ Demo Screenshot
+
+(Add a screenshot of your chatbot UI here)
+
+```md
+![Chatbot Demo](screenshot.png)
+```
+
+---
+
+## 📝 Example
+
+**User:** Hello
+**Bot:** Hi there! How can I help you?
+
+---
+
+## 🔮 Future Improvements
+
+* Add support for AI APIs (OpenAI, Rasa, etc.)
+* Store chat history in local storage
+* Add speech-to-text & text-to-speech
+
+---
+
 
 ## 🚀 Features
 
